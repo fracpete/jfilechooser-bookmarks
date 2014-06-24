@@ -49,7 +49,7 @@ public class CustomHandler {
     extends FileChooserBookmarksPanel {
 
     @Override
-    protected AbstractPropertiesHandler newHandler() {
+    protected AbstractPropertiesHandler newPropertiesHandler() {
       return new CustomPropertiesHandler();
     }
   }

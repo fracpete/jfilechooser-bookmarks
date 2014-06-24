@@ -52,6 +52,12 @@ import com.googlecode.jfilechooserbookmarks.core.MouseUtils;
 
 /**
  * Panel for bookmarking directories in a {@link JFileChooser}.
+ * <p/>
+ * You can customize where the properties file is being stored by overriding
+ * the {@link #newPropertiesHandler()} method, returning a custom 
+ * {@link AbstractPropertiesHandler} class. What icons are being displayed
+ * is handled by the {@link AbstractIconLoader} instance returned by the
+ * {@link #newIconLoader()} method.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision: 8361 $
@@ -93,7 +99,10 @@ public class FileChooserBookmarksPanel
   protected boolean m_SkipDirectoryChanges;
   
   /** the props handler to use. */
-  protected AbstractPropertiesHandler m_Handler;
+  protected AbstractPropertiesHandler m_PropertiesHandler;
+  
+  /** the icon loader to use. */
+  protected AbstractIconLoader m_IconLoader;
   
   /**
    * Initializes the members.
@@ -111,6 +120,9 @@ public class FileChooserBookmarksPanel
 	}
       }
     };
+    
+    m_IconLoader        = newIconLoader();
+    m_PropertiesHandler = newPropertiesHandler();
   }
   
   /**
@@ -159,7 +171,7 @@ public class FileChooserBookmarksPanel
     m_PanelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
     add(m_PanelButtons, BorderLayout.SOUTH);
     
-    m_ButtonAdd = new JButton(GUIHelper.getIcon("add.gif"));
+    m_ButtonAdd = new JButton(m_IconLoader.getAdd());
     m_ButtonAdd.setContentAreaFilled(false);
     m_ButtonAdd.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonAdd.setBackground(getBackground());
@@ -171,7 +183,7 @@ public class FileChooserBookmarksPanel
     });
     m_PanelButtons.add(m_ButtonAdd);
     
-    m_ButtonRemove = new JButton(GUIHelper.getIcon("remove.gif"));
+    m_ButtonRemove = new JButton(m_IconLoader.getRemove());
     m_ButtonRemove.setContentAreaFilled(false);
     m_ButtonRemove.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonRemove.addActionListener(new ActionListener() {
@@ -182,7 +194,7 @@ public class FileChooserBookmarksPanel
     });
     m_PanelButtons.add(m_ButtonRemove);
     
-    m_ButtonMoveUp = new JButton(GUIHelper.getIcon("arrow_up.gif"));
+    m_ButtonMoveUp = new JButton(m_IconLoader.getUp());
     m_ButtonMoveUp.setContentAreaFilled(false);
     m_ButtonMoveUp.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonMoveUp.addActionListener(new ActionListener() {
@@ -195,7 +207,7 @@ public class FileChooserBookmarksPanel
     });
     m_PanelButtons.add(m_ButtonMoveUp);
     
-    m_ButtonMoveDown = new JButton(GUIHelper.getIcon("arrow_down.gif"));
+    m_ButtonMoveDown = new JButton(m_IconLoader.getDown());
     m_ButtonMoveDown.setContentAreaFilled(false);
     m_ButtonMoveDown.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonMoveDown.addActionListener(new ActionListener() {
@@ -257,7 +269,7 @@ public class FileChooserBookmarksPanel
     result = new JPopupMenu();
     indices = m_ListBookmarks.getSelectedIndices();
     
-    menuitem = new JMenuItem("Remove", GUIHelper.getIcon("remove.gif"));
+    menuitem = new JMenuItem("Remove", m_IconLoader.getRemove());
     menuitem.setEnabled(indices.length > 0);
     menuitem.addActionListener(new ActionListener() {
       @Override
@@ -267,7 +279,7 @@ public class FileChooserBookmarksPanel
     });
     result.add(menuitem);
     
-    menuitem = new JMenuItem("Rename", GUIHelper.getEmptyIcon());
+    menuitem = new JMenuItem("Rename", m_IconLoader.getRename());
     menuitem.setEnabled(indices.length == 1);
     menuitem.addActionListener(new ActionListener() {
       @Override
@@ -447,26 +459,23 @@ public class FileChooserBookmarksPanel
   }
   
   /**
+   * Returns the icon loader to use.
+   * 
+   * @return		the icon loader
+   */
+  protected AbstractIconLoader newIconLoader() {
+    return new DefaultIconLoader();
+  }
+  
+  /**
    * Creates a new instance of the props handler.
    * <p/>
    * Override this method to return a different handler.
    * 
    * @return		the handler
    */
-  protected AbstractPropertiesHandler newHandler() {
+  protected AbstractPropertiesHandler newPropertiesHandler() {
     return new DefaultPropertiesHandler();
-  }
-  
-  /**
-   * Returns the handler to use. Creates a new one if necessary.
-   * 
-   * @return		the handler
-   * @see		#newHandler()
-   */
-  protected AbstractPropertiesHandler getHandler() {
-    if (m_Handler == null)
-      m_Handler = newHandler();
-    return m_Handler;
   }
   
   /**
@@ -475,6 +484,6 @@ public class FileChooserBookmarksPanel
    * @return		the manager
    */
   public synchronized FileChooserBookmarksManger getBookmarksManger() {
-    return FileChooserBookmarksManger.getSingleton(getHandler());
+    return FileChooserBookmarksManger.getSingleton(m_PropertiesHandler);
   }
 }
