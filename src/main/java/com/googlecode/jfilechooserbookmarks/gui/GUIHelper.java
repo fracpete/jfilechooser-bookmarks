@@ -245,7 +245,6 @@ public class GUIHelper {
    * 			be a container actually
    * @return		the parent component if one exists or null if not
    * @see		#getParentDialog(Container)
-   * @see		#getParentChild(Container)
    * @see		#getParentFrame(Container)
    */
   public static Component getParentComponent(Component comp) {
