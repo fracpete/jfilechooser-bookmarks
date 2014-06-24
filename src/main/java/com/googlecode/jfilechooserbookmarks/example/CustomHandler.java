@@ -23,8 +23,10 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import com.googlecode.jfilechooserbookmarks.AbstractBookmarksPanel;
+import com.googlecode.jfilechooserbookmarks.AbstractFactory;
 import com.googlecode.jfilechooserbookmarks.AbstractPropertiesHandler;
-import com.googlecode.jfilechooserbookmarks.FileChooserBookmarksPanel;
+import com.googlecode.jfilechooserbookmarks.DefaultFactory;
 
 /**
  * Example class that demonstrates the use of the bookmarks manager
@@ -45,12 +47,21 @@ public class CustomHandler {
     }
   }
 
-  public static class CustomFileChooserBookmarksPanel
-    extends FileChooserBookmarksPanel {
-
+  public static class CustomFactory
+    extends DefaultFactory {
+    
     @Override
-    protected AbstractPropertiesHandler newPropertiesHandler() {
+    public AbstractPropertiesHandler newPropertiesHandler() {
       return new CustomPropertiesHandler();
+    }
+  }
+  
+  public static class CustomFileChooserBookmarksPanel
+    extends AbstractBookmarksPanel {
+    
+    @Override
+    protected AbstractFactory newFactory() {
+      return new CustomFactory();
     }
   }
   

@@ -23,7 +23,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import com.googlecode.jfilechooserbookmarks.FileChooserBookmarksPanel;
+import com.googlecode.jfilechooserbookmarks.DefaultBookmarksPanel;
 
 /**
  * Example class that demonstrates the use of the bookmarks manager.
@@ -36,7 +36,7 @@ public class Default {
     JFileChooser chooser = new JFileChooser();
     chooser.setMultiSelectionEnabled(true);
     chooser.setAcceptAllFileFilterUsed(true);
-    FileChooserBookmarksPanel panel = new FileChooserBookmarksPanel();
+    DefaultBookmarksPanel panel = new DefaultBookmarksPanel();
     // the panel needs to know which JFileChooser to notify when the user
     // selects a bookmark and the current directory needs to change
     panel.setOwner(chooser);

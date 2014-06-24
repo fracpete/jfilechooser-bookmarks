@@ -13,25 +13,31 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * RemoveItemsListener.java
- * Copyright (C) 2011-2014 University of Waikato, Hamilton, New Zealand
+/**
+ * DefaultBookmarksPanel.java
+ * Copyright (C) 2014 University of Waikato, Hamilton, New Zealand
  */
-
-package com.googlecode.jfilechooserbookmarks.event;
+package com.googlecode.jfilechooserbookmarks;
 
 /**
- * For classes that listen to item removals.
- *
+ * Uses the {@link DefaultFactory} as setup.
+ * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 4584 $
+ * @version $Revision$
  */
-public interface RemoveItemsListener {
+public class DefaultBookmarksPanel
+  extends AbstractBookmarksPanel {
+  
+  /** for serialization. */
+  private static final long serialVersionUID = 5409354653351018163L;
 
   /**
-   * Gets called when items are to be removed.
-   *
-   * @param e		the generated event
+   * Creates a new instance of the factory.
+   * 
+   * @return		the factory
    */
-  public void removeItems(RemoveItemsEvent e);
+  @Override
+  protected AbstractFactory newFactory() {
+    return new DefaultFactory();
+  }
 }

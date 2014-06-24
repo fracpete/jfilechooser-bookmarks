@@ -15,10 +15,10 @@
 
 /*
  * BaseList.java
- * Copyright (C) 2009-2011 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2009-2014 University of Waikato, Hamilton, New Zealand
  */
 
-package com.googlecode.jfilechooserbookmarks.core;
+package com.googlecode.jfilechooserbookmarks.gui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -30,7 +30,6 @@ import javax.swing.ListModel;
 
 import com.googlecode.jfilechooserbookmarks.event.RemoveItemsEvent;
 import com.googlecode.jfilechooserbookmarks.event.RemoveItemsListener;
-
 /**
  * Enhanced javax.swing.JList. Incorporates functionality from the
  * JListHelper class.

@@ -15,7 +15,7 @@
 
 /**
  * FileChooserBookmark.java
- * Copyright (C) 2013 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -28,8 +28,8 @@ import java.io.Serializable;
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision: 8361 $
  */
-public class FileChooserBookmark
-  implements Serializable, Comparable<FileChooserBookmark> {
+public class Bookmark
+  implements Serializable, Comparable<Bookmark> {
   
   /** for serialization. */
   private static final long serialVersionUID = 4284430561284693010L;
@@ -46,7 +46,7 @@ public class FileChooserBookmark
    * 
    * @param dir	the directory to use
    */
-  public FileChooserBookmark(File dir) {
+  public Bookmark(File dir) {
     this(dir.getAbsoluteFile().getName(), dir);
   }
   
@@ -56,7 +56,7 @@ public class FileChooserBookmark
    * @param name	the name of the bookmark
    * @param dir	the directory to use
    */
-  public FileChooserBookmark(String name, File dir) {
+  public Bookmark(String name, File dir) {
     if ((name == null) || name.isEmpty())
       throw new IllegalArgumentException("Name cannot be null or empty!");
     if (dir == null)
@@ -96,7 +96,7 @@ public class FileChooserBookmark
    *		is less than, equal to, or greater than the specified object.
    */
   @Override
-  public int compareTo(FileChooserBookmark o) {
+  public int compareTo(Bookmark o) {
     return getName().compareTo(o.getName());
   }
 
@@ -109,8 +109,8 @@ public class FileChooserBookmark
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof FileChooserBookmark)
-      return (compareTo((FileChooserBookmark) obj) == 0);
+    if (obj instanceof Bookmark)
+      return (compareTo((Bookmark) obj) == 0);
     else
       return false;
   }

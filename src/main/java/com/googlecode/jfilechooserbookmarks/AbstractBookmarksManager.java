@@ -14,7 +14,7 @@
  */
 
 /**
- * AbstractFileChooserBookmarksManger.java
+ * AbstractBookmarksManager.java
  * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
@@ -31,14 +31,11 @@ import java.util.Properties;
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision: 8361 $
  */
-public class FileChooserBookmarksManger
+public abstract class AbstractBookmarksManager
   implements Serializable {
 
   /** for serialization. */
   private static final long serialVersionUID = 4461451164139626835L;
-
-  /** the properties to store the bookmarks in. */
-  public final static String FILENAME = "FileChooserBookmarks.props";
 
   /** the property for the number of bookmarks stored. */
   public final static String BOOKMARK_COUNT = "BookmarkCount";
@@ -48,12 +45,9 @@ public class FileChooserBookmarksManger
 
   /** the property prefix for a bookmark directory. */
   public final static String BOOKMARK_PREFIX_DIR = "BookmarkDir.";
-
-  /** the singleton. */
-  protected static FileChooserBookmarksManger m_Singleton;
   
   /** the properties. */
-  protected Properties m_Properties;
+  protected java.util.Properties m_Properties;
   
   /** the props handler to use. */
   protected AbstractPropertiesHandler m_Handler;
@@ -63,7 +57,7 @@ public class FileChooserBookmarksManger
    * 
    * @param handler	the handler to use
    */
-  protected FileChooserBookmarksManger(AbstractPropertiesHandler handler) {
+  protected AbstractBookmarksManager(AbstractPropertiesHandler handler) {
     super();
     m_Handler = handler;
   }
@@ -73,23 +67,23 @@ public class FileChooserBookmarksManger
    * 
    * @return		the current bookmarks
    */
-  public synchronized List<FileChooserBookmark> load() {
-    List<FileChooserBookmark>	result;
-    Properties			props;
+  public synchronized List<Bookmark> load() {
+    List<Bookmark>		result;
+    java.util.Properties	props;
     int				count;
     int				i;
-    FileChooserBookmark		bookmark;
+    Bookmark			bookmark;
     String			name;
-    File	dir;
+    File			dir;
     
-    result = new ArrayList<FileChooserBookmark>();
+    result = new ArrayList<Bookmark>();
     props  = getProperties();
     count  = Integer.parseInt(props.getProperty(BOOKMARK_COUNT, "0"));
     
     for (i = 0; i < count; i++) {
       name     = props.getProperty(BOOKMARK_PREFIX_NAME + i);
       dir      = new File(props.getProperty(BOOKMARK_PREFIX_DIR + i));
-      bookmark = new FileChooserBookmark(name, dir);
+      bookmark = new Bookmark(name, dir);
       result.add(bookmark);
     }
     
@@ -101,11 +95,11 @@ public class FileChooserBookmarksManger
    * 
    * @param bookmarks	the current bookmarks
    */
-  public synchronized boolean save(List<FileChooserBookmark> bookmarks) {
+  public synchronized boolean save(List<Bookmark> bookmarks) {
     boolean		result;
     Properties		props;
     int			i;
-    FileChooserBookmark	bookmark;
+    Bookmark	bookmark;
     
     props = new Properties();
     props.clear();
@@ -128,21 +122,10 @@ public class FileChooserBookmarksManger
    *
    * @return		the properties
    */
-  public synchronized Properties getProperties() {
+  public synchronized java.util.Properties getProperties() {
     if (m_Properties == null)
       m_Properties = m_Handler.loadProperties();
 
     return m_Properties;
-  }
-
-  /**
-   * Returns the singleton of the manager.
-   * 
-   * @return		the singleton
-   */
-  public synchronized static FileChooserBookmarksManger getSingleton(AbstractPropertiesHandler handler) {
-    if (m_Singleton == null)
-      m_Singleton = new FileChooserBookmarksManger(handler);
-    return m_Singleton;    
   }
 }

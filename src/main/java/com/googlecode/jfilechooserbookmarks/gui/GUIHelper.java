@@ -18,7 +18,7 @@
  * Copyright (C) 2008-2014 University of Waikato, Hamilton, New Zealand
  */
 
-package com.googlecode.jfilechooserbookmarks.core;
+package com.googlecode.jfilechooserbookmarks.gui;
 
 import java.awt.Component;
 import java.awt.Container;

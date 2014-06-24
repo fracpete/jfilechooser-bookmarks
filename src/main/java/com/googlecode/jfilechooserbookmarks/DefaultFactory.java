@@ -14,74 +14,55 @@
  */
 
 /**
- * DefaultIconLoader.java
+ * DefaultFactory.java
  * Copyright (C) 2014 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
-import javax.swing.ImageIcon;
-
-import com.googlecode.jfilechooserbookmarks.gui.GUIHelper;
-
 /**
- * Default icon loader.
+ * Default factory for implementations.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
  */
-public class DefaultIconLoader
-  extends AbstractIconLoader {
+public class DefaultFactory
+  extends AbstractFactory {
 
   /** for serialization. */
-  private static final long serialVersionUID = 4246132624550617978L;
-
+  private static final long serialVersionUID = 6977168963256376965L;
+  
+  /** the singleton instance of the manager. */
+  protected static AbstractBookmarksManager m_Manager;
+  
   /**
-   * Returns the "down" icon.
+   * Returns the singleton of the bookmarks manager to use.
    * 
-   * @return		the icon
+   * @return		the singleton instance
    */
   @Override
-  public ImageIcon getDown() {
-    return GUIHelper.getIcon("arrow_down.gif");
+  public synchronized AbstractBookmarksManager getBookmarksManager() {
+    if (m_Manager == null)
+      m_Manager = new DefaultBookmarksManager(newPropertiesHandler());
+    return m_Manager;
   }
 
   /**
-   * Returns the "up" icon.
+   * Returns a new instance of the properties handler to be used.
    * 
-   * @return		the icon
+   * @return		the handler instance
    */
   @Override
-  public ImageIcon getUp() {
-    return GUIHelper.getIcon("arrow_up.gif");
+  public AbstractPropertiesHandler newPropertiesHandler() {
+    return new DefaultPropertiesHandler();
   }
 
   /**
-   * Returns the "add" icon.
+   * Returns a new instance of the icon loader to be used.
    * 
-   * @return		the icon
+   * @return		the loader instance
    */
   @Override
-  public ImageIcon getAdd() {
-    return GUIHelper.getIcon("add.gif");
-  }
-
-  /**
-   * Returns the "remove" icon.
-   * 
-   * @return		the icon
-   */
-  @Override
-  public ImageIcon getRemove() {
-    return GUIHelper.getIcon("remove.gif");
-  }
-
-  /**
-   * Returns the "rename" icon.
-   * 
-   * @return		the icon
-   */
-  @Override
-  public ImageIcon getRename() {
-    return GUIHelper.getEmptyIcon();
+  public AbstractIconLoader newIconLoader() {
+    return new DefaultIconLoader();
   }
 }

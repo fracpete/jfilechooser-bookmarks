@@ -15,10 +15,10 @@
 
 /*
  * MouseUtils.java
- * Copyright (C) 2009 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2009-2014 University of Waikato, Hamilton, New Zealand
  */
 
-package com.googlecode.jfilechooserbookmarks.core;
+package com.googlecode.jfilechooserbookmarks.gui;
 
 import java.awt.event.MouseEvent;
 

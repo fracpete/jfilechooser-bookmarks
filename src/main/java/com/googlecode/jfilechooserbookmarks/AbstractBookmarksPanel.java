@@ -14,8 +14,8 @@
  */
 
 /**
- * FileChooserBookmarksPanel.java
- * Copyright (C) 2013 University of Waikato, Hamilton, New Zealand
+ * AbstractBookmarksPanel.java
+ * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -44,25 +44,22 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.googlecode.jfilechooserbookmarks.core.BaseList;
-import com.googlecode.jfilechooserbookmarks.core.BasePanel;
-import com.googlecode.jfilechooserbookmarks.core.BaseScrollPane;
-import com.googlecode.jfilechooserbookmarks.core.GUIHelper;
-import com.googlecode.jfilechooserbookmarks.core.MouseUtils;
+import com.googlecode.jfilechooserbookmarks.gui.BaseList;
+import com.googlecode.jfilechooserbookmarks.gui.BasePanel;
+import com.googlecode.jfilechooserbookmarks.gui.BaseScrollPane;
+import com.googlecode.jfilechooserbookmarks.gui.GUIHelper;
+import com.googlecode.jfilechooserbookmarks.gui.MouseUtils;
 
 /**
  * Panel for bookmarking directories in a {@link JFileChooser}.
  * <p/>
- * You can customize where the properties file is being stored by overriding
- * the {@link #newPropertiesHandler()} method, returning a custom 
- * {@link AbstractPropertiesHandler} class. What icons are being displayed
- * is handled by the {@link AbstractIconLoader} instance returned by the
- * {@link #newIconLoader()} method.
+ * You can customize the panel by implementing the {@link #newFactory()}
+ * method, returning a custom factory class instance.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision: 8361 $
  */
-public class FileChooserBookmarksPanel
+public abstract class AbstractBookmarksPanel
   extends BasePanel {
 
   /** for serialization. */
@@ -98,8 +95,8 @@ public class FileChooserBookmarksPanel
   /** whether to skip changes to current directory. */
   protected boolean m_SkipDirectoryChanges;
   
-  /** the props handler to use. */
-  protected AbstractPropertiesHandler m_PropertiesHandler;
+  /** the factor to use. */
+  protected AbstractFactory m_Factory;
   
   /** the icon loader to use. */
   protected AbstractIconLoader m_IconLoader;
@@ -121,8 +118,8 @@ public class FileChooserBookmarksPanel
       }
     };
     
-    m_IconLoader        = newIconLoader();
-    m_PropertiesHandler = newPropertiesHandler();
+    m_Factory    = newFactory();
+    m_IconLoader = m_Factory.newIconLoader();
   }
   
   /**
@@ -157,7 +154,7 @@ public class FileChooserBookmarksPanel
 	  return;
 	if (m_ListBookmarks.getSelectedIndices().length != 1)
 	  return;
-	FileChooserBookmark bookmark = (FileChooserBookmark) m_ListBookmarks.getSelectedValue();
+	Bookmark bookmark = (Bookmark) m_ListBookmarks.getSelectedValue();
 	if (!bookmark.getDirectory().exists())
 	  return;
 	m_SkipDirectoryChanges = true;
@@ -299,8 +296,8 @@ public class FileChooserBookmarksPanel
    * @param model	the model with bookmarks
    * @return		the (potentially) updated bookmark
    */
-  protected FileChooserBookmark createUniqueBookmark(FileChooserBookmark bookmark, DefaultListModel model) {
-    FileChooserBookmark	result;
+  protected Bookmark createUniqueBookmark(Bookmark bookmark, DefaultListModel model) {
+    Bookmark	result;
     int		count;
     
     result = bookmark;
@@ -308,7 +305,7 @@ public class FileChooserBookmarksPanel
     count = 1;
     while (model.contains(result)) {
       count++;
-      result = new FileChooserBookmark(bookmark.getName() + count, bookmark.getDirectory());
+      result = new Bookmark(bookmark.getName() + count, bookmark.getDirectory());
     }
     
     return result;
@@ -320,7 +317,7 @@ public class FileChooserBookmarksPanel
   protected void addBookmark() {
     File[]	files;
     boolean	added;
-    FileChooserBookmark	bookmark;
+    Bookmark	bookmark;
     
     if (m_Owner == null) {
       System.err.println("No owner set, cannot add boookmark!");
@@ -334,13 +331,13 @@ public class FileChooserBookmarksPanel
       if (!file.isDirectory())
 	continue;
       added    = true;
-      bookmark = new FileChooserBookmark(file);
+      bookmark = new Bookmark(file);
       m_ModelBookmarks.addElement(createUniqueBookmark(bookmark, m_ModelBookmarks));
     }
 
     // nothing added? add current directory
     if (!added) {
-      bookmark = new FileChooserBookmark(m_Owner.getCurrentDirectory());
+      bookmark = new Bookmark(m_Owner.getCurrentDirectory());
       m_ModelBookmarks.addElement(createUniqueBookmark(bookmark, m_ModelBookmarks));
     }
     
@@ -368,10 +365,10 @@ public class FileChooserBookmarksPanel
    * @param index	the index of the bookmark to rename
    */
   protected void renameBookmark(int index) {
-    FileChooserBookmark	bookmark;
+    Bookmark	bookmark;
     String	name;
     
-    bookmark = (FileChooserBookmark) m_ModelBookmarks.get(index);
+    bookmark = (Bookmark) m_ModelBookmarks.get(index);
     name     = JOptionPane.showInputDialog(
 	GUIHelper.getParentComponent(this), 
 	"Please enter a new name:",
@@ -379,7 +376,7 @@ public class FileChooserBookmarksPanel
     if ((name == null) || (name.equals(bookmark.getName())))
       return;
     
-    m_ModelBookmarks.set(index, new FileChooserBookmark(name, bookmark.getDirectory()));
+    m_ModelBookmarks.set(index, new Bookmark(name, bookmark.getDirectory()));
     
     saveBookmarks(m_ModelBookmarks);
   }
@@ -391,11 +388,11 @@ public class FileChooserBookmarksPanel
    */
   protected DefaultListModel loadBookmarks() {
     DefaultListModel		result;
-    List<FileChooserBookmark>	list;
+    List<Bookmark>	list;
     
     result = new DefaultListModel();
     list   = getBookmarksManger().load();
-    for (FileChooserBookmark item: list)
+    for (Bookmark item: list)
       result.addElement(item);
     
     return result;
@@ -408,12 +405,12 @@ public class FileChooserBookmarksPanel
    */
   protected boolean saveBookmarks(DefaultListModel model) {
     int				i;
-    FileChooserBookmark		bookmark;
-    List<FileChooserBookmark>	list;
+    Bookmark		bookmark;
+    List<Bookmark>	list;
     
-    list = new ArrayList<FileChooserBookmark>();
+    list = new ArrayList<Bookmark>();
     for (i = 0; i < model.getSize(); i++) {
-      bookmark = (FileChooserBookmark) model.get(i);
+      bookmark = (Bookmark) model.get(i);
       list.add(bookmark);
     }
     
@@ -459,31 +456,18 @@ public class FileChooserBookmarksPanel
   }
   
   /**
-   * Returns the icon loader to use.
+   * Creates a new instance of the factory.
    * 
-   * @return		the icon loader
+   * @return		the factory
    */
-  protected AbstractIconLoader newIconLoader() {
-    return new DefaultIconLoader();
-  }
-  
-  /**
-   * Creates a new instance of the props handler.
-   * <p/>
-   * Override this method to return a different handler.
-   * 
-   * @return		the handler
-   */
-  protected AbstractPropertiesHandler newPropertiesHandler() {
-    return new DefaultPropertiesHandler();
-  }
+  protected abstract AbstractFactory newFactory();
   
   /**
    * Returns the bookmarks manager to use.
    * 
    * @return		the manager
    */
-  public synchronized FileChooserBookmarksManger getBookmarksManger() {
-    return FileChooserBookmarksManger.getSingleton(m_PropertiesHandler);
+  public synchronized AbstractBookmarksManager getBookmarksManger() {
+    return m_Factory.getBookmarksManager();
   }
 }

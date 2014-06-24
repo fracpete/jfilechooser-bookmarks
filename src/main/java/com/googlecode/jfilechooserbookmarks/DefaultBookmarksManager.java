@@ -13,25 +13,30 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * RemoveItemsListener.java
- * Copyright (C) 2011-2014 University of Waikato, Hamilton, New Zealand
+/**
+ * DefaultBookmarksManager.java
+ * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
  */
-
-package com.googlecode.jfilechooserbookmarks.event;
+package com.googlecode.jfilechooserbookmarks;
 
 /**
- * For classes that listen to item removals.
- *
+ * Default manager for the filechooser bookmarks.
+ * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 4584 $
+ * @version $Revision: 8361 $
  */
-public interface RemoveItemsListener {
+public class DefaultBookmarksManager
+  extends AbstractBookmarksManager {
+
+  /** for serialization. */
+  private static final long serialVersionUID = 4461451164139626835L;
 
   /**
-   * Gets called when items are to be removed.
-   *
-   * @param e		the generated event
+   * Default constructor.
+   * 
+   * @param handler	the handler to use
    */
-  public void removeItems(RemoveItemsEvent e);
+  public DefaultBookmarksManager(AbstractPropertiesHandler handler) {
+    super(handler);
+  }
 }
