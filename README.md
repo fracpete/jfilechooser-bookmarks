@@ -7,9 +7,9 @@ This Swing component is intended to be used as _accessory_ for the JFileChooser 
 You can use the following dependency in your `pom.xml`:
 ```xml
 <dependency>
-  <groupId>com.googlecode.jfilechooser-bookmarks</groupId>
+  <groupId>com.github.fracpete</groupId>
   <artifactId>jfilechooser-bookmarks</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
