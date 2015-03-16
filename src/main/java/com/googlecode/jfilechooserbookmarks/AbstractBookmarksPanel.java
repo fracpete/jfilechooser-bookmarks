@@ -52,7 +52,7 @@ import com.googlecode.jfilechooserbookmarks.gui.MouseUtils;
 
 /**
  * Panel for bookmarking directories in a {@link JFileChooser}.
- * <p/>
+ * <p>
  * You can customize the panel by implementing the {@link #newFactory()}
  * method, returning a custom factory class instance.
  * 
