@@ -15,7 +15,7 @@
 
 /**
  * AbstractBookmarksPanel.java
- * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2015 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -402,6 +402,7 @@ public abstract class AbstractBookmarksPanel
    * Saves all the bookmarks in the properties.
    * 
    * @param model	the current bookmarks
+   * @return            true if successfully saved
    */
   protected boolean saveBookmarks(DefaultListModel model) {
     int				i;

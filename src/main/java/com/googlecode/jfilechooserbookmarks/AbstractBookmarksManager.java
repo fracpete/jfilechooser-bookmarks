@@ -15,7 +15,7 @@
 
 /**
  * AbstractBookmarksManager.java
- * Copyright (C) 2013-2014 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2015 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -94,6 +94,7 @@ public abstract class AbstractBookmarksManager
    * Saves all the bookmarks in the properties.
    * 
    * @param bookmarks	the current bookmarks
+   * @return            true if successfully saved
    */
   public synchronized boolean save(List<Bookmark> bookmarks) {
     boolean		result;
