@@ -3,14 +3,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.googlecode.jfilechooser-bookmarks</groupId>
+  <groupId>com.github.fracpete</groupId>
   <artifactId>jfilechooser-bookmarks</artifactId>
   <version>0.1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>jfilechooser-bookmarks</name>
-  <description>.</description>
-  <url>https://code.google.com/p/jfilechooser-bookmarks/</url>
+  <description>Directory bookmarks for the JFileChooser Swing component.</description>
+  <url>https://github.com/fracpete/jfilechooser-bookmarks</url>
   <licenses>
     <license>
       <name>GNU General Public License 3</name>
@@ -36,9 +36,9 @@
   </parent>
 
   <scm>
-    <connection>scm:git:https://code.google.com/p/jfilechooser-bookmarks/</connection>
-    <developerConnection>scm:git:https://code.google.com/p/jfilechooser-bookmarks/</developerConnection>
-    <url>https://code.google.com/p/jfilechooser-bookmarks/</url>
+    <connection>scm:git:https://github.com/fracpete/jfilechooser-bookmarks</connection>
+    <developerConnection>scm:git:https://github.com/fracpete/jfilechooser-bookmarks</developerConnection>
+    <url>https://github.com/fracpete/jfilechooser-bookmarks</url>
     <tag>HEAD</tag>
   </scm>
 
