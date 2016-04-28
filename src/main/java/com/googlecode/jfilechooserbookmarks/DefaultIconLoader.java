@@ -15,13 +15,13 @@
 
 /**
  * DefaultIconLoader.java
- * Copyright (C) 2014 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2014-2016 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
-import javax.swing.ImageIcon;
-
 import com.googlecode.jfilechooserbookmarks.gui.GUIHelper;
+
+import javax.swing.ImageIcon;
 
 /**
  * Default icon loader.
@@ -83,5 +83,23 @@ public class DefaultIconLoader
   @Override
   public ImageIcon getRename() {
     return GUIHelper.getEmptyIcon();
+  }
+
+  /**
+   * Returns the "copy" icon.
+   *
+   * @return		the icon
+   */
+  public ImageIcon getCopy() {
+    return GUIHelper.getIcon("copy.gif");
+  }
+
+  /**
+   * Returns the "paste" icon.
+   *
+   * @return		the icon
+   */
+  public ImageIcon getPaste() {
+    return GUIHelper.getIcon("paste.gif");
   }
 }

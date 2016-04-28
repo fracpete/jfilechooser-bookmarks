@@ -15,10 +15,26 @@
 
 /**
  * AbstractBookmarksPanel.java
- * Copyright (C) 2013-2015 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2016 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
+import com.googlecode.jfilechooserbookmarks.gui.BaseList;
+import com.googlecode.jfilechooserbookmarks.gui.BasePanel;
+import com.googlecode.jfilechooserbookmarks.gui.BaseScrollPane;
+import com.googlecode.jfilechooserbookmarks.gui.GUIHelper;
+import com.googlecode.jfilechooserbookmarks.gui.MouseUtils;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -32,23 +48,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import com.googlecode.jfilechooserbookmarks.gui.BaseList;
-import com.googlecode.jfilechooserbookmarks.gui.BasePanel;
-import com.googlecode.jfilechooserbookmarks.gui.BaseScrollPane;
-import com.googlecode.jfilechooserbookmarks.gui.GUIHelper;
-import com.googlecode.jfilechooserbookmarks.gui.MouseUtils;
 
 /**
  * Panel for bookmarking directories in a {@link JFileChooser}.
@@ -88,7 +87,13 @@ public abstract class AbstractBookmarksPanel
   
   /** the button for moving a bookmark down. */
   protected JButton m_ButtonMoveDown;
-  
+
+  /** the button for copying the current directory. */
+  protected JButton m_ButtonCopy;
+
+  /** the button for pasting the directory from the clipboard. */
+  protected JButton m_ButtonPaste;
+
   /** the listener for directory changes. */
   protected PropertyChangeListener m_DirChangeListener;
   
@@ -169,6 +174,7 @@ public abstract class AbstractBookmarksPanel
     add(m_PanelButtons, BorderLayout.SOUTH);
     
     m_ButtonAdd = new JButton(m_IconLoader.getAdd());
+    m_ButtonAdd.setToolTipText("Adds the current directory as bookmark");
     m_ButtonAdd.setContentAreaFilled(false);
     m_ButtonAdd.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonAdd.setBackground(getBackground());
@@ -181,6 +187,7 @@ public abstract class AbstractBookmarksPanel
     m_PanelButtons.add(m_ButtonAdd);
     
     m_ButtonRemove = new JButton(m_IconLoader.getRemove());
+    m_ButtonRemove.setToolTipText("Removes the selected bookmark(s)");
     m_ButtonRemove.setContentAreaFilled(false);
     m_ButtonRemove.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonRemove.addActionListener(new ActionListener() {
@@ -192,6 +199,7 @@ public abstract class AbstractBookmarksPanel
     m_PanelButtons.add(m_ButtonRemove);
     
     m_ButtonMoveUp = new JButton(m_IconLoader.getUp());
+    m_ButtonMoveUp.setToolTipText("Moves the selected bookmark(s) up");
     m_ButtonMoveUp.setContentAreaFilled(false);
     m_ButtonMoveUp.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonMoveUp.addActionListener(new ActionListener() {
@@ -205,6 +213,7 @@ public abstract class AbstractBookmarksPanel
     m_PanelButtons.add(m_ButtonMoveUp);
     
     m_ButtonMoveDown = new JButton(m_IconLoader.getDown());
+    m_ButtonMoveDown.setToolTipText("Moves the selected bookmark(s) down");
     m_ButtonMoveDown.setContentAreaFilled(false);
     m_ButtonMoveDown.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     m_ButtonMoveDown.addActionListener(new ActionListener() {
@@ -216,6 +225,30 @@ public abstract class AbstractBookmarksPanel
       }
     });
     m_PanelButtons.add(m_ButtonMoveDown);
+    
+    m_ButtonCopy = new JButton(m_IconLoader.getCopy());
+    m_ButtonCopy.setToolTipText("Copies the current directory to the clipboard");
+    m_ButtonCopy.setContentAreaFilled(false);
+    m_ButtonCopy.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    m_ButtonCopy.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        copyCurrentDirToClipboard();
+      }
+    });
+    m_PanelButtons.add(m_ButtonCopy);
+    
+    m_ButtonPaste = new JButton(m_IconLoader.getPaste());
+    m_ButtonPaste.setToolTipText("Pastes the current directory from the clipboard");
+    m_ButtonPaste.setContentAreaFilled(false);
+    m_ButtonPaste.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    m_ButtonPaste.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        pasteCurrentDirFromClipboard();
+      }
+    });
+    m_PanelButtons.add(m_ButtonPaste);
   }
   
   /**
@@ -409,7 +442,7 @@ public abstract class AbstractBookmarksPanel
     Bookmark		bookmark;
     List<Bookmark>	list;
     
-    list = new ArrayList<Bookmark>();
+    list = new ArrayList<>();
     for (i = 0; i < model.getSize(); i++) {
       bookmark = (Bookmark) model.get(i);
       list.add(bookmark);
@@ -417,7 +450,29 @@ public abstract class AbstractBookmarksPanel
     
     return getBookmarksManger().save(list);
   }
-  
+
+  /**
+   * Copies the current directory to the clipboard.
+   */
+  protected void copyCurrentDirToClipboard() {
+    GUIHelper.copyToClipboard(m_Owner.getCurrentDirectory().getAbsolutePath());
+  }
+
+  /**
+   * Pastes the current directory from the clipboard.
+   */
+  protected void pasteCurrentDirFromClipboard() {
+    String	dirStr;
+    File	dir;
+
+    dirStr = GUIHelper.pasteStringFromClipboard();
+    if (dirStr != null) {
+      dir = new File(dirStr);
+      if (dir.exists() && dir.isDirectory())
+	m_Owner.setCurrentDirectory(dir);
+    }
+  }
+
   /**
    * Returns the preferred size.
    * 
