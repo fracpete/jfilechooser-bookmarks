@@ -19,6 +19,7 @@
  */
 package com.googlecode.jfilechooserbookmarks;
 
+import com.github.fracpete.jclipboardhelper.ClipboardHelper;
 import com.googlecode.jfilechooserbookmarks.gui.BaseList;
 import com.googlecode.jfilechooserbookmarks.gui.BasePanel;
 import com.googlecode.jfilechooserbookmarks.gui.BaseScrollPane;
@@ -455,7 +456,7 @@ public abstract class AbstractBookmarksPanel
    * Copies the current directory to the clipboard.
    */
   protected void copyCurrentDirToClipboard() {
-    GUIHelper.copyToClipboard(m_Owner.getCurrentDirectory().getAbsolutePath());
+    ClipboardHelper.copyToClipboard(m_Owner.getCurrentDirectory().getAbsolutePath());
   }
 
   /**
@@ -465,7 +466,7 @@ public abstract class AbstractBookmarksPanel
     String	dirStr;
     File	dir;
 
-    dirStr = GUIHelper.pasteStringFromClipboard();
+    dirStr = ClipboardHelper.pasteStringFromClipboard();
     if (dirStr != null) {
       dir = new File(dirStr);
       if (dir.exists() && dir.isDirectory())

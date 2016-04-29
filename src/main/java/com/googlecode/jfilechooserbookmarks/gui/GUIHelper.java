@@ -27,10 +27,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.URL;
@@ -314,48 +310,5 @@ public class GUIHelper {
 	}
       }
     }
-  }
-
-  /**
-   * Copies the given string to the system's clipboard.
-   *
-   * @param s		the string to copy
-   */
-  public static void copyToClipboard(String s) {
-    copyToClipboard(new TransferableString(s));
-  }
-
-  /**
-   * Copies the given transferable to the system's clipboard.
-   *
-   * @param t		the transferable to copy
-   */
-  public static void copyToClipboard(Transferable t) {
-    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(t, null);
-  }
-
-  /**
-   * Obtains a string from the clipboard.
-   *
-   * @return		the obtained string, null if not available
-   */
-  public static String pasteStringFromClipboard() {
-    Clipboard clipboard;
-    String		result;
-    Transferable	content;
-
-    result = null;
-
-    try {
-      clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-      content   = clipboard.getContents(null);
-      if ((content != null) && (content.isDataFlavorSupported(DataFlavor.stringFlavor)))
-	result = (String) content.getTransferData(DataFlavor.stringFlavor);
-    }
-    catch (Exception e) {
-      result = null;
-    }
-
-    return result;
   }
 }
