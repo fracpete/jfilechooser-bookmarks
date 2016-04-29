@@ -460,18 +460,27 @@ public abstract class AbstractBookmarksPanel
   }
 
   /**
+   * Checks whether the string represents a valid directory.
+   *
+   * @param dirStr	the string to test
+   * @return		true if valid and existing directory
+   */
+  protected boolean isValidPath(String dirStr) {
+    File	dir;
+
+    dir = new File(dirStr);
+    return (dir.exists() && dir.isDirectory());
+  }
+
+  /**
    * Pastes the current directory from the clipboard.
    */
   protected void pasteCurrentDirFromClipboard() {
     String	dirStr;
-    File	dir;
 
     dirStr = ClipboardHelper.pasteStringFromClipboard();
-    if (dirStr != null) {
-      dir = new File(dirStr);
-      if (dir.exists() && dir.isDirectory())
-	m_Owner.setCurrentDirectory(dir);
-    }
+    if (isValidPath(dirStr))
+      m_Owner.setCurrentDirectory(new File(dirStr));
   }
 
   /**
@@ -502,6 +511,7 @@ public abstract class AbstractBookmarksPanel
     m_ButtonMoveUp.setEnabled(hasBookmarks && m_ListBookmarks.canMoveUp());
     m_ButtonMoveDown.setEnabled(hasBookmarks && m_ListBookmarks.canMoveDown());
     m_ButtonRemove.setEnabled(hasBookmarks && m_ListBookmarks.getSelectedIndices().length > 0);
+    m_ButtonPaste.setEnabled(ClipboardHelper.canPasteStringFromClipboard() && isValidPath(ClipboardHelper.pasteStringFromClipboard()));
   }
   
   /**
