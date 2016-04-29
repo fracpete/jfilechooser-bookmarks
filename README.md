@@ -9,7 +9,7 @@ You can use the following dependency in your `pom.xml`:
 <dependency>
   <groupId>com.github.fracpete</groupId>
   <artifactId>jfilechooser-bookmarks</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 
