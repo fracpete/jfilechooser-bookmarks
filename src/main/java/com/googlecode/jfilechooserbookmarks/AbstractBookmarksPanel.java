@@ -468,6 +468,9 @@ public abstract class AbstractBookmarksPanel
   protected boolean isValidPath(String dirStr) {
     File	dir;
 
+    if (dirStr == null)
+      return false;
+
     dir = new File(dirStr);
     return (dir.exists() && dir.isDirectory());
   }
