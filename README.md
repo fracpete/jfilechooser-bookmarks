@@ -1,7 +1,17 @@
-jfilechooser-bookmarks
-======================
+# jfilechooser-bookmarks
 
 This Swing component is intended to be used as _accessory_ for the JFileChooser widget. The user is able to add/delete/reorder directory bookmarks that are shown on the right-hand side when using the cross-platform _Metal_ look'n'feel. Clicking on a bookmark entry automatically switches to the directory represented by this bookmark.
+
+## Screenshots
+
+Default view:
+
+![Screenshot of panel with two bookmarks](src/site/resources/default.png)
+
+Ability to rename bookmarks:
+
+![Screenshot of panel with two bookmarks](src/site/resources/default_popup.png)
+
 
 ## Maven ##
 You can use the following dependency in your `pom.xml`:
@@ -13,10 +23,12 @@ You can use the following dependency in your `pom.xml`:
 </dependency>
 ```
 
+
 ## Non-Maven ##
 You can download jar files from Maven Central:
 
 [search for com.googlecode.jfilechooser-bookmarks](http://search.maven.org/#search|ga|1|g%3A%22com.googlecode.jfilechooser-bookmarks%22)
+
 
 ## Default usage ##
 The following example uses the default panel. The bookmarks get saved as Java properties file in the user's home directory (`$HOME/.jfcb/FileChooserBookmarks.props`).
@@ -44,6 +56,7 @@ public class Default {
   }
 }
 ```
+
 
 ## Custom properties handler ##
 The following example uses a custom properties handler (and therefore custom factory and panel) for storing the bookmarks as Java properties in `$HOME/.jfcb.props`:
@@ -99,4 +112,3 @@ public class CustomHandler {
   }
 }
 ```
-
