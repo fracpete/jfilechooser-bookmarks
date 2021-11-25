@@ -36,8 +36,8 @@
   </parent>
 
   <scm>
-    <connection>scm:git:https://github.com/fracpete/jfilechooser-bookmarks</connection>
-    <developerConnection>scm:git:https://github.com/fracpete/jfilechooser-bookmarks</developerConnection>
+    <connection>scm:git:ssh://git@github.com/fracpete/jfilechooser-bookmarks</connection>
+    <developerConnection>scm:git:ssh://git@github.com/fracpete/jfilechooser-bookmarks</developerConnection>
     <url>https://github.com/fracpete/jfilechooser-bookmarks</url>
     <tag>HEAD</tag>
   </scm>
