@@ -13,9 +13,9 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
+/*
  * AbstractBookmarksPanel.java
- * Copyright (C) 2013-2016 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2021 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -39,6 +39,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -57,13 +58,15 @@ import java.util.List;
  * method, returning a custom factory class instance.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 8361 $
  */
 public abstract class AbstractBookmarksPanel
   extends BasePanel {
 
   /** for serialization. */
   private static final long serialVersionUID = -1969362821325599909L;
+
+  /** the maximum length of string to inspect. */
+  public final static int MAX_PATH_LENGTH = 1024;
 
   /** the owner. */
   protected JFileChooser m_Owner;
@@ -171,7 +174,7 @@ public abstract class AbstractBookmarksPanel
     });
     add(new BaseScrollPane(m_ListBookmarks), BorderLayout.CENTER);
     
-    m_PanelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    m_PanelButtons = new JPanel(new GridLayout(1, 0));
     add(m_PanelButtons, BorderLayout.SOUTH);
     
     m_ButtonAdd = new JButton(m_IconLoader.getAdd());
@@ -250,16 +253,6 @@ public abstract class AbstractBookmarksPanel
       }
     });
     m_PanelButtons.add(m_ButtonPaste);
-  }
-  
-  /**
-   * Finishes up the initialization.
-   */
-  @Override
-  protected void finishInit() {
-    super.finishInit();
-    
-    updateButtons();
   }
 
   /**
@@ -469,6 +462,12 @@ public abstract class AbstractBookmarksPanel
     File	dir;
 
     if (dirStr == null)
+      return false;
+
+    if (dirStr.contains("\n") || dirStr.contains("\r"))
+      return false;
+
+    if (dirStr.length() > MAX_PATH_LENGTH)
       return false;
 
     dir = new File(dirStr);
