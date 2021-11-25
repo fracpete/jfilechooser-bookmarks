@@ -504,7 +504,7 @@ public abstract class AbstractBookmarksPanel
   /**
    * Updates the enabled state of the buttons.
    */
-  protected void updateButtons() {
+  public void updateButtons() {
     boolean	hasBookmarks;
     
     hasBookmarks = (m_ModelBookmarks.getSize() > 0);
