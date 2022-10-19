@@ -13,24 +13,24 @@ Ability to rename bookmarks:
 ![Screenshot of panel with two bookmarks](src/site/resources/default_popup.png)
 
 
-## Maven ##
+## Maven
 You can use the following dependency in your `pom.xml`:
 ```xml
 <dependency>
   <groupId>com.github.fracpete</groupId>
   <artifactId>jfilechooser-bookmarks</artifactId>
-  <version>0.1.8</version>
+  <version>0.1.9</version>
 </dependency>
 ```
 
 
-## Non-Maven ##
+## Non-Maven
 You can download jar files from Maven Central:
 
 [search for com.googlecode.jfilechooser-bookmarks](http://search.maven.org/#search|ga|1|g%3A%22com.googlecode.jfilechooser-bookmarks%22)
 
 
-## Default usage ##
+## Default usage
 The following example uses the default panel. The bookmarks get saved as Java properties file in the user's home directory (`$HOME/.jfcb/FileChooserBookmarks.props`).
 
 ```java
