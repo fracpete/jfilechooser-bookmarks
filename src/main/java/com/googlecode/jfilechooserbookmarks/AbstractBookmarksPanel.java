@@ -15,7 +15,7 @@
 
 /*
  * AbstractBookmarksPanel.java
- * Copyright (C) 2013-2021 University of Waikato, Hamilton, New Zealand
+ * Copyright (C) 2013-2022 University of Waikato, Hamilton, New Zealand
  */
 package com.googlecode.jfilechooserbookmarks;
 
@@ -38,7 +38,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,8 +68,8 @@ public abstract class AbstractBookmarksPanel
   public final static int MAX_PATH_LENGTH = 1024;
 
   /** the owner. */
-  protected JFileChooser m_Owner;
-  
+  protected Communication m_Owner;
+
   /** the list of bookmarks. */
   protected BaseList m_ListBookmarks;
   
@@ -261,18 +260,27 @@ public abstract class AbstractBookmarksPanel
    * @param value	the new owner
    */
   public void setOwner(JFileChooser value) {
+    setOwner(new JFileChooserCommunication(value));
+  }
+
+  /**
+   * Sets the owner.
+   *
+   * @param value	the new owner
+   */
+  public void setOwner(Communication value) {
     if (m_Owner != null)
       m_Owner.removePropertyChangeListener(m_DirChangeListener);
     m_Owner = value;
     m_Owner.addPropertyChangeListener(m_DirChangeListener);
   }
-  
+
   /**
    * Returns the owner.
    * 
    * @return		the owner, null if none set
    */
-  public JFileChooser getOwner() {
+  public Communication getOwner() {
     return m_Owner;
   }
   
