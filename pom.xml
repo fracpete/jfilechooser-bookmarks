@@ -3,7 +3,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.fracpete</groupId>
   <artifactId>jfilechooser-bookmarks</artifactId>
   <version>0.1.10-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -30,9 +29,9 @@
   </developers>
 
   <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
+    <groupId>com.github.fracpete</groupId>
+    <artifactId>central-portal-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
 
   <scm>
