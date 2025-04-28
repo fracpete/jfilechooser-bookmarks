@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>jfilechooser-bookmarks</artifactId>
-  <version>0.1.11</version>
+  <version>0.1.12-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>jfilechooser-bookmarks</name>
@@ -38,7 +38,7 @@
     <connection>scm:git:ssh://git@github.com/fracpete/jfilechooser-bookmarks</connection>
     <developerConnection>scm:git:ssh://git@github.com/fracpete/jfilechooser-bookmarks</developerConnection>
     <url>https://github.com/fracpete/jfilechooser-bookmarks</url>
-    <tag>jfilechooser-bookmarks-0.1.11</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
